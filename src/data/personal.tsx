@@ -5,7 +5,7 @@ export const SOCIAL_LINKS = [
   { href: "https://twitter.com/uchkunrakhimov", icon: FaTwitter, label: "Twitter" },
   { href: "https://www.linkedin.com/in/uchkunio", icon: FaLinkedin, label: "LinkedIn" },
   { href: "mailto:uchkunrakhimov@gmail.com", icon: FaEnvelope, label: "Email" },
-  { href: "/resume.pdf", icon: FaFileAlt, label: "Resume" }
+  { href: "https://docs.google.com/document/d/1urFr8PbkJc7hbxIc53rLXC0qdW0sCjIwkt84ONxhhFY/edit?usp=sharing", icon: FaFileAlt, label: "Resume" }
 ];
 
 export const BIO = {
