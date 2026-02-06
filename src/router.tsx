@@ -4,8 +4,14 @@ import ExperiencePage from './pages/ExperiencePage';
 import ProjectsPage from './pages/ProjectsPage';
 import BlogsPage from './pages/BlogsPage';
 import BlogDetailPage from './pages/BlogDetailPage';
+import SeoExample from './pages/SeoExample';
+import { RootLayout } from './layouts/RootLayout';
 
-const rootRoute = createRootRoute();
+
+
+const rootRoute = createRootRoute({
+  component: RootLayout
+});
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -37,12 +43,19 @@ const blogDetailRoute = createRoute({
   component: BlogDetailPage,
 });
 
+const seoExampleRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/seo-example',
+  component: SeoExample,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute, 
   experienceRoute, 
   projectsRoute, 
   blogsRoute,
-  blogDetailRoute
+  blogDetailRoute,
+  seoExampleRoute
 ]);
 
 export const router = createRouter({ 

@@ -1,209 +1,119 @@
 import { Link } from '@tanstack/react-router';
-import { FaGithub, FaLinkedin, FaEnvelope, FaTwitter } from 'react-icons/fa';
-import { ModeToggle } from "@/components/mode-toggle"
+import { SkillGrid, GitHubActivity } from '@/components/SkillGrid';
+import { getAllBlogs } from '@/lib/blogUtils';
+import { SOCIAL_LINKS, BIO, EXPERIENCE_DATA, FEATURED_PROJECTS } from '@/data/personal';
 
 export default function HomePage() {
+  const latestBlogs = getAllBlogs().slice(0, 3);
+
   return (
-    <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-4xl mx-auto">
       {/* Header */}
-      <header className="mb-8 animate-fadeIn">
-        <div className="flex items-center justify-between mb-1">
-          <h1 className="text-4xl font-bold">Uchkun Rakhimov</h1>
-          <ModeToggle />
-        </div>
-        <p className="text-muted-foreground text-base mb-3">Backend Engineer | TypeScript • Nestjs/Expressjs • GCP/AWS</p>
-        <div className="flex gap-3 text-xl text-muted-foreground">
-          <a href="https://github.com/uchkunrakhimow" className="hover:text-foreground transition-colors" aria-label="GitHub">
-            <FaGithub />
-          </a>
-          <a href="https://twitter.com/uchkunrakhimov" className="hover:text-foreground transition-colors" aria-label="Twitter">
-            <FaTwitter />
-          </a>
-          <a href="https://www.linkedin.com/in/uchkunio" className="hover:text-foreground transition-colors" aria-label="LinkedIn">
-            <FaLinkedin />
-          </a>
-          <a href="mailto:uchkunrakhimov@gmail.com" className="hover:text-foreground transition-colors" aria-label="Email">
-            <FaEnvelope />
-          </a>
+      <header className="mb-12 animate-fadeIn text-left">
+        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-primary to-primary/50 mb-4">
+          {BIO.name}
+        </h1>
+        <p className="text-xl text-muted-foreground mb-6 max-w-2xl">
+          {BIO.description}
+        </p>
+        
+        <div className="flex flex-wrap gap-4 justify-start">
+          <div className="flex gap-3 text-2xl text-muted-foreground">
+            {SOCIAL_LINKS.map((link) => (
+              <a 
+                key={link.label}
+                href={link.href} 
+                className="hover:text-foreground transition-colors transform hover:scale-110" 
+                aria-label={link.label}
+              >
+                <link.icon />
+              </a>
+            ))}
+          </div>
         </div>
       </header>
 
-      <main>
-        {/* About Me */}
-        <section className="mb-8 animate-fadeInUp delay-100">
-          <h2 className="text-2xl font-semibold mb-2">About Me</h2>
-          <p className="text-muted-foreground text-base leading-relaxed">
-            Backend Engineer with 3+ years of experience building scalable systems using Node.js, TypeScript, NestJS/Express/Fastify, and MongoDB/PostgreSQL. Strong foundation in GCP infrastructure, distributed services, CI/CD, monitoring/logging, and production debugging. Frontend experience with React.js and modern tooling. Delivered production systems across startups and high-traffic applications with focus on performance, reliability, and code quality.
-          </p>
-        </section>
+      <main className="space-y-16">
 
         {/* Skills */}
-        <section className="mb-8 animate-fadeInUp delay-150">
-          <h2 className="text-2xl font-semibold mb-3">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {[
-              "Node.js", "TypeScript", "NestJS", "Express.js", "Fastify",
-              "React.js", "Tailwind CSS", "Redux", "Zustand",
-              "MongoDB", "PostgreSQL", "MySQL", "Redis",
-              "GCP", "AWS", "Docker", "CI/CD"
-            ].map((skill) => (
-              <span key={skill} className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">
-                {skill}
-              </span>
+        <section className="animate-fadeInUp delay-200">
+          <SkillGrid />
+          <GitHubActivity />
+        </section>
+
+        {/* Experience & Projects (Abbreviated) */}
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Experience */}
+          <section className="animate-fadeInUp delay-300">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold border-b-2 border-primary/20 pb-2">Experience</h2>
+              <Link to="/experience" className="text-sm text-primary hover:underline">View All</Link>
+            </div>
+            <div className="space-y-8">
+              {EXPERIENCE_DATA.map((exp, index) => (
+                <div key={index} className="relative pl-6 border-l-2 border-border hover:border-primary transition-colors">
+                  <div className={`absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-background border-2 ${index === 0 ? 'border-primary' : 'border-muted-foreground'}`} />
+                  <h3 className="text-lg font-bold">{exp.role}</h3>
+                  <p className="text-sm text-primary font-medium mb-1">{exp.company} • {exp.period}</p>
+                  <p className="text-muted-foreground text-sm">
+                    {exp.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Projects */}
+          <section className="animate-fadeInUp delay-300">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold border-b-2 border-primary/20 pb-2">Featured Work</h2>
+              <Link to="/projects" className="text-sm text-primary hover:underline">View All</Link>
+            </div>
+            <div className="space-y-6">
+               {FEATURED_PROJECTS.map((project, index) => (
+                 <div key={index} className="group p-4 rounded-xl bg-secondary/40 backdrop-blur-md border border-transparent hover:border-primary/20 transition-all hover:shadow-lg">
+                   <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                   <p className="text-sm text-muted-foreground mb-3">{project.description}</p>
+                   <div className="flex flex-wrap gap-2">
+                     {project.stack.map((tech) => (
+                       <span key={tech} className="text-xs font-mono bg-secondary px-2 py-0.5 rounded text-secondary-foreground">{tech}</span>
+                     ))}
+                   </div>
+                 </div>
+               ))}
+            </div>
+          </section>
+        </div>
+
+        {/* Latest Thoughts */}
+        <section className="animate-fadeInUp delay-400">
+           <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold">Latest Thoughts</h2>
+            <Link to="/blogs" className="text-sm text-primary hover:underline">Read Blog</Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {latestBlogs.map((blog) => (
+              <Link 
+                key={blog.slug} 
+                to="/blog/$slug" 
+                params={{ slug: blog.slug }}
+                className="group block p-5 rounded-2xl bg-secondary/40 backdrop-blur-md hover:bg-secondary/70 transition-all border border-transparent hover:border-primary/20"
+              >
+                <div className="text-xs font-mono text-primary mb-2">
+                  {new Date(blog.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </div>
+                <h3 className="text-lg font-bold mb-2 leading-tight group-hover:text-primary transition-colors">
+                  {blog.title}
+                </h3>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {blog.excerpt}
+                </p>
+              </Link>
             ))}
           </div>
         </section>
-
-        {/* Experience */}
-        <section className="mb-8 animate-fadeInUp delay-200">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-2xl font-semibold">Experience</h2>
-            <Link to="/experience" className="text-base text-muted-foreground hover:text-foreground transition-colors">
-              More →
-            </Link>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <div className="flex justify-between mb-0.5">
-                <h3 className="text-lg font-medium">Startups DNA</h3>
-                <span className="text-sm text-muted-foreground">Nov 2025 – Present</span>
-              </div>
-              <p className="text-muted-foreground text-sm mb-1">Backend Developer</p>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Architecting v2 API redesign for Fastify-based microservice with improved endpoint structure and error handling.
-              </p>
-            </div>
-
-            <div>
-              <div className="flex justify-between mb-0.5">
-                <h3 className="text-lg font-medium">Numeo.ai</h3>
-                <span className="text-sm text-muted-foreground">May 2025 – Jul 2025</span>
-              </div>
-              <p className="text-muted-foreground text-sm mb-1">Backend Developer</p>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Led backend development for Chrome extension serving 1,000+ active users.
-              </p>
-            </div>
-
-            <div>
-              <div className="flex justify-between mb-0.5">
-                <h3 className="text-lg font-medium">Freelancer</h3>
-                <span className="text-sm text-muted-foreground">Dec 2023 – May 2025</span>
-              </div>
-              <p className="text-muted-foreground text-sm mb-1">Fullstack Developer</p>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Built scalable systems including TedbookCRM and WiFi Captive Portal.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Projects */}
-        <section className="animate-fadeInUp delay-300">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-2xl font-semibold">Projects</h2>
-            <Link to="/projects" className="text-base text-muted-foreground hover:text-foreground transition-colors">
-              More →
-            </Link>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-medium mb-1">TedbookCRM</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-1.5">
-                Complete CRM backend supporting web and mobile platforms with real-time updates.
-              </p>
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span>Express.js</span>
-                <span>•</span>
-                <span>TypeScript</span>
-                <span>•</span>
-                <span>MongoDB</span>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-medium mb-1">WiFi Captive Portal</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-1.5">
-                Authentication system handling 1,000+ daily user registrations across 14 branches.
-              </p>
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span>MySQL</span>
-                <span>•</span>
-                <span>Sequelize</span>
-                <span>•</span>
-                <span>TypeScript</span>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-medium mb-1">VoIP Integration System</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-1.5">
-                Node.js middleware connecting Asterisk phone systems with custom call queue management.
-              </p>
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span>Node.js</span>
-                <span>•</span>
-                <span>Asterisk</span>
-                <span>•</span>
-                <span>Real-time</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Blog */}
-        <section className="mt-8 animate-fadeInUp delay-400">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-2xl font-semibold">Blog</h2>
-            <Link to="/blogs" className="text-base text-muted-foreground hover:text-foreground transition-colors">
-              More →
-            </Link>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <Link to="/blog/$slug" params={{ slug: 'getting-started-with-react-typescript' }}>
-                <h3 className="text-lg font-medium mb-1 hover:text-muted-foreground transition-colors cursor-pointer">Getting Started with React and TypeScript</h3>
-              </Link>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-1.5">
-                Learn how to set up a modern React application with TypeScript and best practices.
-              </p>
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span>Jan 15, 2024</span>
-                <span>•</span>
-                <span>5 min read</span>
-              </div>
-            </div>
-
-            <div>
-              <Link to="/blog/$slug" params={{ slug: 'building-scalable-web-applications' }}>
-                <h3 className="text-lg font-medium mb-1 hover:text-muted-foreground transition-colors cursor-pointer">Building Scalable Web Applications</h3>
-              </Link>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-1.5">
-                Explore architectural patterns and design principles for maintainable apps.
-              </p>
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span>Jan 8, 2024</span>
-                <span>•</span>
-                <span>8 min read</span>
-              </div>
-            </div>
-
-            <div>
-              <Link to="/blog/$slug" params={{ slug: 'understanding-modern-css-layouts' }}>
-                <h3 className="text-lg font-medium mb-1 hover:text-muted-foreground transition-colors cursor-pointer">Understanding Modern CSS Layouts</h3>
-              </Link>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-1.5">
-                A comprehensive guide to Flexbox, Grid, and responsive design.
-              </p>
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span>Dec 20, 2023</span>
-                <span>•</span>
-                <span>6 min read</span>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
+
     </div>
   );
 }

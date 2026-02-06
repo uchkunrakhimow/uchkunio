@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
 import ReactMarkdown from 'react-markdown';
-import { getBlogBySlug } from '../data/blogData';
+import { getBlogBySlug } from '@/lib/blogUtils';
+import { ReadingProgressBar } from '@/components/ProgressBar';
 
 export default function BlogDetailPage() {
   const { slug } = useParams({ strict: false });
@@ -13,7 +14,7 @@ export default function BlogDetailPage() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-2xl mx-auto">
+      <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-4xl mx-auto">
         <Link to="/blogs" className="text-base text-muted-foreground hover:text-foreground transition-colors mb-6 inline-block">
           ← Back to Blogs
         </Link>
@@ -24,7 +25,8 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-4xl mx-auto">
+      <ReadingProgressBar />
       <Link to="/blogs" className="text-base text-muted-foreground hover:text-foreground transition-colors mb-6 inline-block">
         ← Back to Blogs
       </Link>

@@ -51,8 +51,18 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (theme: Theme) => {
+      // Disable transitions during theme change
+      const root = window.document.documentElement
+      root.classList.add('no-transition')
+
       localStorage.setItem(storageKey, theme)
       setTheme(theme)
+      
+      // Re-enable transitions immediately after the theme change has led to a repaint
+      // A small timeout ensures the DOM has updated
+      setTimeout(() => {
+        root.classList.remove('no-transition')
+      }, 0)
     },
   }
 
@@ -63,6 +73,7 @@ export function ThemeProvider({
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext)
 
