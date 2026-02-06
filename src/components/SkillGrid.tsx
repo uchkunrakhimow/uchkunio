@@ -57,7 +57,7 @@ export const SkillGrid = () => {
             className="group flex flex-col items-center justify-center p-3 bg-secondary/60 backdrop-blur-md rounded-xl hover:bg-secondary/80 hover:shadow-lg transition-[background-color,border-color,box-shadow] border border-transparent hover:border-border cursor-default"
           >
             <skill.icon 
-              className="text-4xl mb-3 transition-all duration-200 filter grayscale group-hover:grayscale-0" 
+              className="text-4xl mb-3 transition-all duration-200" 
               style={{ color: skill.color }}
             />
             <span className="font-medium text-sm text-center">{skill.name}</span>
